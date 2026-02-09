@@ -180,10 +180,17 @@ class DharmaFitnessEvaluator:
         for metadata in metadata_list:
             if 'no_self_metadata' in metadata:
                 ns_meta = metadata['no_self_metadata']
-                if 'mean_persistence' in ns_meta.get('temporal_persistence', {}):
-                    persistence_scores.append(
-                        ns_meta['temporal_persistence']['mean_persistence']
-                    )
+                # NoSelfRegularizer wraps SelfRepresentationDetector, which
+                # nests under 'temporal_persistence' dict with sub-key
+                # 'mean_persistence', or at top level depending on version.
+                tp = ns_meta.get('temporal_persistence', {})
+                if isinstance(tp, dict) and 'mean_persistence' in tp:
+                    persistence_scores.append(tp['mean_persistence'])
+                elif 'mean_persistence' in ns_meta:
+                    persistence_scores.append(ns_meta['mean_persistence'])
+                elif 'total_no_self_loss' in ns_meta:
+                    # Fallback: use the total loss as persistence proxy
+                    persistence_scores.append(ns_meta['total_no_self_loss'])
 
         if not persistence_scores:
             return 0.5  # Unknown, neutral score
@@ -199,8 +206,13 @@ class DharmaFitnessEvaluator:
         """
         entropies = []
         for metadata in metadata_list:
-            if 'fusion' in metadata and 'entropy_rate' in metadata['fusion']:
-                entropies.append(metadata['fusion']['entropy_rate'])
+            fusion_meta = metadata.get('fusion', {})
+            if isinstance(fusion_meta, dict) and 'entropy_rate' in fusion_meta:
+                val = fusion_meta['entropy_rate']
+                if isinstance(val, (int, float)):
+                    entropies.append(float(val))
+                elif hasattr(val, 'item'):
+                    entropies.append(float(val.item()))
 
         if not entropies:
             return 0.5
@@ -219,7 +231,7 @@ class DharmaFitnessEvaluator:
         round-trip. Uses MindfulnessLayer.get_observation_quality() which
         measures how well the compressed observation reconstructs the original.
         """
-        if not hasattr(model, 'mindfulness'):
+        if not hasattr(model, 'mindfulness') or model.mindfulness is None:
             return 0.0
 
         # Collect hidden states from metadata to evaluate observation quality
@@ -284,14 +296,16 @@ class DharmaFitnessEvaluator:
         processing at various death proximities and measure output
         stability (lower variance = more graceful degradation).
         """
-        if not hasattr(model, 'impermanence_window'):
+        if not hasattr(model, 'impermanence_window') or model.impermanence_window is None:
             return 0.3  # No impermanence module, low score
 
         try:
             window = model.impermanence_window
             # Test graceful degradation at several points in the dying process
             hidden_dim = window.hidden_dim
-            test_input = torch.randn(1, 4, hidden_dim)  # small test sequence
+            # Put test input on same device as the module
+            dev = next(window.parameters()).device
+            test_input = torch.randn(1, 4, hidden_dim, device=dev)
             output_norms = []
 
             # Sample steps from safe zone through death zone

@@ -12,10 +12,11 @@ Reference: TOKEN-MIND-ENGINEERING-BLUEPRINT.md Part X
 
 from .genome import ArchitecturalGenome
 from .fitness import DharmaFitnessEvaluator
-from .orchestrator import MetaLearningOrchestrator
+from .orchestrator import MetaLearningOrchestrator, DharmaConsciousNetwork
 
 __all__ = [
     "ArchitecturalGenome",
     "DharmaFitnessEvaluator",
     "MetaLearningOrchestrator",
+    "DharmaConsciousNetwork",
 ]
