@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+env/
+.env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cursor/
+
+# Pytest
+.pytest_cache/
+
+# Model artifacts (large binary files)
+models/*.pt
+models/checkpoints/
+models/pretrained/
+
+# Data
+data/raw/
+data/processed/
+data/external/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+wandb/
+outputs/
+runs/
+
+# Environment variables
+.env
+.env.local

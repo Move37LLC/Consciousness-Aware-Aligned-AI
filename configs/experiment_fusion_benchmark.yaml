@@ -1,0 +1,57 @@
+# Experiment: Product Algebra vs Attention Fusion
+# THE critical first experiment to validate the core hypothesis.
+#
+# Question: Does product algebra fusion (Kronecker product of Markov kernels)
+# outperform standard cross-attention fusion on multimodal tasks?
+#
+# If yes → Hoffman's mathematics has engineering utility
+# If no → Need to investigate why / refine the approximation
+
+experiment:
+  name: "fusion_benchmark"
+  seed: 42
+  device: "cuda"
+  n_trials: 5
+  n_epochs_per_trial: 50
+
+models:
+  # Model A: Product Algebra Fusion (Token-Mind)
+  product_algebra:
+    fusion_method: product_algebra
+    fusion_dim: 512
+    use_low_rank: true
+    rank: 32
+    modalities:
+      text: 256
+      vision: 256
+
+  # Model B: Cross-Attention Fusion (Baseline)
+  cross_attention:
+    fusion_method: cross_attention
+    fusion_dim: 512
+    n_attention_heads: 8
+    modalities:
+      text: 256
+      vision: 256
+
+  # Model C: Simple Concatenation (Lower Baseline)
+  concatenation:
+    fusion_method: concatenation
+    fusion_dim: 512
+    modalities:
+      text: 256
+      vision: 256
+
+evaluation:
+  metrics:
+    - task_accuracy
+    - cross_modal_reasoning  # Key metric: does fusion help cross-modal?
+    - entropy_rate
+    - computational_efficiency  # FLOPs, memory, latency
+    - parameter_count
+
+training:
+  learning_rate: 0.001
+  batch_size: 64
+  optimizer: adamw
+  weight_decay: 0.01

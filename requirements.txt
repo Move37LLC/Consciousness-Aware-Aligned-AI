@@ -1,0 +1,36 @@
+# Core ML
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+transformers>=4.30.0
+accelerate>=0.20.0
+
+# Scientific computing
+numpy>=1.24.0
+scipy>=1.10.0
+pandas>=2.0.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.14.0
+
+# Experiment tracking
+wandb>=0.15.0
+hydra-core>=1.3.0
+
+# Utilities
+tqdm>=4.65.0
+einops>=0.6.0
+
+# Development
+pytest>=7.3.0
+black>=23.3.0
+mypy>=1.3.0
+isort>=5.12.0
+
+# Hardware interfaces (uncomment when ready)
+# qiskit>=0.43.0       # Phase 4: Quantum sensing
+# pyserial>=3.5        # Phase 3: Custom sensors
+# astropy>=5.3.0       # Phase 3: Telescope data
+# gwpy>=3.0.0          # Phase 3: Gravitational wave data
