@@ -81,7 +81,7 @@ python scripts/run_evolution.py
 
 ### Support This Research
 
-**GoFundMe Campaign:** [https://gofund.me/09c78429](https://www.gofundme.com/f/consciousnessaware-ai-safer-aligned-empirical/donate?attribution_id=sl:014c1e64-d4bc-4ad0-8aa1-18b5a576cb98&utm_campaign=unknown&utm_medium=undefined&utm_source=undefined) **or** [https://gofund.me/ddf6e7175]
+**GoFundMe Campaign:** [https://gofund.me/09c78429](https://www.gofundme.com/f/consciousnessaware-ai-safer-aligned-empirical/donate?attribution_id=sl:014c1e64-d4bc-4ad0-8aa1-18b5a576cb98&utm_campaign=unknown&utm_medium=undefined&utm_source=undefined) **or** https://gofund.me/ddf6e7175
 
 Help us complete Phase 2-4 and publish openly. $15K goal for hardware, publication, and research time.
 All code remains open source. All results publicly accessible.
